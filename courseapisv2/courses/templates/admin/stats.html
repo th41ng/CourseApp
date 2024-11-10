@@ -1,0 +1,44 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<ul>
+    {%for s in stats%}
+    <li>{{s.name}}:{{s.count}}</li>
+    {%endfor%}
+</ul>
+<div style="width: 60%">
+    <canvas id="myChart"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let data =[];
+    let label=[];
+
+    {%for s in stats%}
+        label.push("{{s.name}}")
+        data.push({{s.count}})
+    {%endfor%}
+
+    window.onload = function(){
+         const ctx = document.getElementById('myChart');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: label,
+              datasets: [{
+                label: '# so luong',
+                data: data,
+                borderWidth: 1,
+                backgroundColor: ['red']
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        }
+</script>
+{%endblock%}
